@@ -26,7 +26,7 @@ function get_course_details( $atts ) {
 	$event_id = isset($_GET['event_id']) ? $_GET['event_id'] : 0;
 	$course_id = get_the_ID();
 	
-	// Get event id from query string paramenter Event ID, if false get the post ID
+	// Get Event ID via query string paramenter, if false get the post ID
 	if ( $event_id == 0 ) {
 		$id = $course_id;
 	} else {
