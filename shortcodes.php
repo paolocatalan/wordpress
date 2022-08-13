@@ -2,9 +2,11 @@
 
 // Check if user is logged in, output content on the enclosing shortcode for allowed buddypress users.
 function member_check_logged_in( $atts, $content = null ) {
-  $user = wp_get_current_user();
-  $members_only = array( 'administrator', 'subscriber' );	
-  $spectators_allowed = array( 'administrator', 'subscriber', 'bbp_spectator' );	
+	$user = wp_get_current_user();
+	$members_only = array( 'administrator', 'subscriber' );	
+  	$spectators_allowed = array( 'administrator', 'subscriber', 'bbp_spectator' );	
+	
+	// Allow BuddyPress spectators to access the content
 	if($atts['partners'] == "yes") {
 		if ( is_user_logged_in() && !is_null( $content ) && !is_feed() )
 			if ( array_intersect( $spectators_allowed, $user->roles ) ) :
@@ -19,7 +21,7 @@ function member_check_logged_in( $atts, $content = null ) {
 }		
 add_shortcode( 'members_only', 'member_check_logged_in' );
 
-// Output learndash course meta data using global id or parameter name
+// Output LearnDash course meta data using global id or parameter name
 function get_course_details( $atts ) {
 	$event_id = isset($_GET['event_id']) ? $_GET['event_id'] : 0;
 	$course_id = get_the_ID();
