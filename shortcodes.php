@@ -21,7 +21,7 @@ function member_check_logged_in( $atts, $content = null ) {
 }		
 add_shortcode( 'members_only', 'member_check_logged_in' );
 
-// Output LearnDash course meta data using global id or parameter name
+// Output LearnDash course meta data via global id or parameter name
 function get_course_details( $atts ) {
 	$event_id = isset($_GET['event_id']) ? $_GET['event_id'] : 0;
 	$course_id = get_the_ID();
