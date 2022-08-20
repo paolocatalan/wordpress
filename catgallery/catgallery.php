@@ -20,21 +20,21 @@ function render_cats_from_api( $atts ) {
 	), $atts));
 	
 	
-	$data = file_get_contents("https://api.thecatapi.com/v1/breeds?limit=10"); 
+	$data = file_get_contents('https://api.thecatapi.com/v1/breeds?api_key=9f06abd1-c0b7-49cb-837c-2e49dc4b7871'); 
 	$dataj = json_decode($data);
 
-foreach ($dataj as $i => $cats ) {
+	foreach ($dataj as $i => $cats ) {
 	
-  	$output .= '
-	<div class="gallery"><a href="#img'. $i .'"><img src="' . $cats->image->url .'"></a></div>
-	<a href="#" class="lightbox" id="img'. $i .'"><span style="background-image: url(' . $cats->image->url .')"></span></a>
-	';	
+  		$output .= '
+			<div class="gallery"><a href="#img' . $i . '"><img src="' . $cats->image->url . '"></a></div>
+			<a href="#" class="lightbox" id="img' . $i . '"><span style="background-image: url(' . $cats->image->url . ');"></span></a>
+		';	
 	
-	if ($i >= $number - 1) break;
+		if ($i >= $number - 1) break;
 
-}
+	}
 	
-	return $output;
+return $output;
 
 }
 add_shortcode('cat_gallery', 'render_cats_from_api');
