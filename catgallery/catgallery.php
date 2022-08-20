@@ -25,7 +25,10 @@ function render_cats_from_api( $atts ) {
 
 foreach ($dataj as $i => $cats ) {
 	
-  	$output .= '<div class="gallery"><img src="' . $cats->image->url .'"></div>';	
+  	$output .= '
+	<div class="gallery"><a href="#img'. $i .'"><img src="' . $cats->image->url .'"></a></div>
+	<a href="#" class="lightbox" id="img'. $i .'"><span style="background-image: url(' . $cats->image->url .')"></span></a>
+	';	
 	
 	if ($i >= $number - 1) break;
 
