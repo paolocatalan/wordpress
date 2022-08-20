@@ -3,9 +3,7 @@
  * Plugin Name:       Cat Gallery
  * Plugin URI:        https://github.com/paolocatalan/wordpress/
  * Description:       Plugin that fetch cats and render them in a gallery.
- * Version:           1.10.3
- * Requires at least: 5.2
- * Requires PHP:      7.2
+ * Version:           1.0.3
  * Author:            Paolo Catalan
  * Author URI:        https://paolocatalan.com/
  */
@@ -23,7 +21,7 @@ function render_cats_from_api( $atts ) {
 	$data = file_get_contents('https://api.thecatapi.com/v1/breeds?api_key=9f06abd1-c0b7-49cb-837c-2e49dc4b7871'); 
 	$dataj = json_decode($data);
 
-	foreach ($dataj as $i => $cats ) {
+	foreach ( $dataj as $i => $cats ) {
 	
   		$output .= '
 			<div class="gallery"><a href="#img' . $i . '"><img src="' . $cats->image->url . '"></a></div>
