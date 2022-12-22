@@ -1,3 +1,4 @@
+<?php
 function get_users_completed_courses($user_id) {
 	$user_info = get_user_meta($user_id);	
 	//get all completed courses in users meta
