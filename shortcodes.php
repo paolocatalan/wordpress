@@ -88,3 +88,68 @@ function default_login_form($atts) {
  
 }
 add_shortcode( 'login_form', 'default_login_form' );
+
+// Navigation header with menu options and navbar class
+function navigation_header($atts) {
+	$atts = shortcode_atts( array(
+		'class' => 'navbar-dark bg-dark',
+		'navbar_brand' => '',
+		'menu' => ''
+	), $atts);	
+
+	if ($atts['navbar_brand'] == 'true') {
+		$brand = '<a class="navbar-brand" href="'. network_site_url( '/' ) .'" title="'. get_bloginfo( 'name' ) .'"><img src="https://www.parima.org/wp-content/uploads/2019/11/PARIMAlogo_PNG-White.png" alt="PARIMA" loading="eager" width="145" height="33" /></a>';
+	} 
+
+	if ( !empty($atts['menu']) ) {
+		$nav_menus = wp_nav_menu(
+			array(
+				'menu'    		  	=> $atts['menu'],
+				'menu_id'       	=> false,
+				'menu_class'   		=> 'navbar-nav',
+				'depth'         	=> 3,
+				'echo'          	=> false,								
+				'fallback_cb'     => 'WP_Bootstrap_Navwalker::fallback',
+				'walker'          => new WP_Bootstrap_Navwalker(),
+			)
+		);
+	} else {
+		global $post;	
+		/**Add menu link to Dashboard and Login page */
+		if ( is_user_logged_in() ) {			
+			$login_link = '<a class="nav-link" href="' . site_url('/dashboard/') . '">Dashboard</a>';	
+		} else {		
+			$login_link = '<a class="nav-link" href="/login/?redirect=' . $post->post_name . '">Login</a>';				
+		}	
+		/**Add the navigation menu */
+		switch ($post->post_name) {
+			case 'country-focus':
+				$nav_menus = '<ul class="navbar-nav"><li class="nav-item"><a class="nav-link" href="/conference-registration/">Singapore 2022</a></li>' . $login_link . '</ul>';
+				break;
+			case 'conference-registration':
+				$nav_menus = '<ul class="navbar-nav"><li class="nav-item">' . $login_link . '</ul>';
+				break;
+			default:
+				$nav_menus = '<ul class="navbar-nav"><li class="nav-item">' . $login_link . '</li></ul>';
+		}
+		
+	}
+	/**Add navigation Call to Action */
+	if ( $menu == 'refactor-event-page' ) {			
+		$nav_cta = '<a class="btn btn-primary mx-2 disabled" href="/registration/" disabled>Register Now</a>';			
+	}
+
+	return '<nav class="navbar navbar-expand-lg ' . $atts['class'] . '" role="navigation">
+						<div class="container-xl">
+							'. $brand .'
+							<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+								<span class="navbar-toggler-icon"></span>
+							</button>
+							<div id="navbarCollapse" class="collapse navbar-collapse justify-content-end">  
+							' . $nav_menus . $nav_cta . '
+							</div>	
+						</div>  
+					</nav>';
+
+}
+add_shortcode('navbar', 'navigation_header');
