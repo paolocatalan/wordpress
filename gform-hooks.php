@@ -44,3 +44,47 @@ function populate_event_date( $value ) {
 	return $value;
 }
 add_filter( 'gform_field_value_event_date', 'populate_event_date' );
+
+//checks the email address if it is already registered with the event for non-members form
+function email_registration_check( $validation_result ) {
+	$email = rgpost( 'input_3' );
+	$event_name = rgpost( 'input_42' );	
+	$search_criteria = array(
+    	'status'        => 'active',
+    	'field_filters' => array(
+        	'mode' => 'all',
+        	array(
+            	'key'   => '3',
+            	'value' => $email
+        	),
+        	array(
+            	'key'   => '42',
+            	'value' => $event_name
+        	)
+    	)
+	);
+	$form_id = 19;
+	$entry_count = GFAPI::count_entries( $form_id, $search_criteria );
+			
+  $form = $validation_result['form'];
+  
+	if ( $entry_count >= 1 ) {
+
+		$validation_result['is_valid'] = false;
+
+		foreach( $form['fields'] as &$field ) {
+
+			if ( $field->id == '3' ) {
+				$field->failed_validation = true;
+				$field->validation_message = 'This email address is already registered with this event.';
+				break;
+			}
+		}
+
+	}
+
+	$validation_result['form'] = $form;
+	return $validation_result;
+  
+}
+add_filter( 'gform_validation_19', 'email_registration_check' );
