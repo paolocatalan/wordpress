@@ -66,4 +66,25 @@ function get_course_details( $atts ) {
 		
 }
 add_shortcode('event_details', 'get_course_details');
-?>
+
+function default_login_form($atts) {
+	$atts = shortcode_atts( array(
+		'label_password' => 'Password',
+		'label_button' => 'Login',
+		'redirect_to'=> get_permalink( get_the_ID() )
+	), $atts );
+
+  $args = array(
+		'echo'						=> false,
+		'label_username' 	=> __( 'Email Address' ),
+		'label_password' 	=> $atts['label_password'],
+		'label_log_in'		=> $atts['label_button'],	
+		'redirect'				=> $atts['redirect_to'],
+		'remember'				=> false,
+		'value_remember'	=> false,
+  );
+  
+  return wp_login_form( $args );
+ 
+}
+add_shortcode( 'login_form', 'default_login_form' );
