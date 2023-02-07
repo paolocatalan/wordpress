@@ -151,3 +151,26 @@ function generate_username( $username, $feed, $form, $entry ) {
 
 	return $username;
 }
+
+// Put a unique ID on Gravity Form (single form ID) entries.
+function get_unique() {
+    $prefix = "RCF-"; // update the prefix here
+    do {
+        $unique = mt_rand();
+        $unique = substr($unique, 0, 8);
+        $unique = $prefix . $unique;
+    } while (!check_unique($unique));
+    return $unique;
+}
+add_filter('gform_field_value_uuid', 'get_unique');
+
+function check_unique($unique) {
+    global $wpdb;
+    $table = $wpdb->prefix . 'rg_lead_detail';
+    $form_id = 83; // update to the form ID your unique id field belongs to
+    $field_id = 74; // update to the field ID your unique id is being prepopulated in
+    $result = $wpdb->get_var("SELECT value FROM $table WHERE form_id = '$form_id' AND field_number = '$field_id' AND value = '$unique'");
+    if(empty($result))
+        return true;
+    return false;
+}
