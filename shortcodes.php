@@ -21,6 +21,18 @@ function logged_in_member_check( $atts, $content = null ) {
 }		
 add_shortcode( 'members_only', 'logged_in_member_check' );
 
+//display content for non members
+function visitor_check_logged_in($atts, $content = null) {
+	$user = wp_get_current_user();
+	 if ( ( !is_user_logged_in() && !is_null( $content ) ) || is_feed() ) {
+		return do_shortcode($content); 
+	 } else {		
+		return; 		 
+	 } 
+	
+}
+add_shortcode( 'non-members', 'visitor_check_logged_in' );
+
 // Output LearnDash course meta data via global id or parameter name
 function get_course_details( $atts ) {
 	$event_id = isset($_GET['event_id']) ? $_GET['event_id'] : 0;
