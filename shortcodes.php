@@ -1,5 +1,14 @@
 <?php
 
+// Pass Data Query String Paramenters
+function get_url_parameter($atts) {  
+	$atts = shortcode_atts( array(
+    'parameter_name' => '',
+  ), $atts );
+  return $_GET[$parameter_name];  
+}
+add_shortcode('pass_data', 'get_url_parameter');
+
 // Check if user is logged in, output content on the enclosing shortcode for allowed BuddyPress users.
 function logged_in_member_check( $atts, $content = null ) {
 	$user = wp_get_current_user();
